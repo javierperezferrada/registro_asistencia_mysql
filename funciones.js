@@ -6,6 +6,17 @@ var contenido;
 var presentes = new Array();
 //JQuery
 $(document).ready(function(){
+	var g=leerGET();
+	id=g[0];
+	fecha=g[1];
+	bloque=g[2];
+	sala=g[3];
+	if(id!= null && fecha!=null){
+		$('input[name=fecha]').val(fecha);
+		$('select[name=bloque]').val(bloque);
+		$('input[name=sala]').val(sala);
+	}
+
 
 	/*******Funciones para clases.html********/
 	$('#nueva_clase').click(function(){
@@ -16,18 +27,10 @@ $(document).ready(function(){
 		if(id == null){
 			alert('Debe seleccionar una clase para editar.')
 		}else{
-			window.open('asistencia.html','_self');
-
-			//revisar para cargar datos de clase a editar a asistencia.html
-			$(document).ready(function(){
-			 	$('input[name=fecha]').val(fecha);
-			 	$('input[name=bloque]').val(bloque);
-			 	$('input[name=sala]').val(sala);
-			 	$('input[name=contenido]').val(contenido);
-			});//fin document.ready anidado
+			window.open('asistencia.html?'+id+'&'+fecha+'&'+bloque+'&'+sala,'_self');
 		}
 
-	});
+	});//fin editar_clase.click
 //Graba los datos de una nueva clase en la base de datos mysql y luego muestra las clases.
 	$(document).on('click','#editar', function(){
 			$('#datos').hide();
@@ -118,6 +121,13 @@ $(document).ready(function(){
 
 
 });//fin document.ready
+
+
+function leerGET(){
+	var cadGET = location.search.substr(1,location.search.length);
+	var arrGET = cadGET.split("&");
+	return arrGET;
+}
 
 //Funcion que se encarga de solicitar los datos de las clases con el objeto XMLhttpRequest().
 function mostrar_clases(){
