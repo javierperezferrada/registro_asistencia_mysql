@@ -18,39 +18,44 @@ mysql_select_db($bd_base, $con);
   $contenido=$_POST['contenido'];
   $presentes=$_POST['presentes'];
 
-
+  //php que agrega a asitencia todos lospresentes en la clase.
   if($presentes!=null){
-    $link = mysqli_connect($bd_host, $bd_usuario, $bd_password, $bd_base)
-    or die('No se pudo conectar: ' . mysqli_error($link));
-    $query = 'select max(id) from clase;'
-      or die('Error en la consulta: ' . mysqli_error($link));
-    $result = $link->query($query);
-    $id_clase = mysqli_fetch_array($result);
-    if($id_clase!=null){
-      foreach ($presentes as $key => $value) {
-        if($value!='on'){
-          $sql="INSERT INTO asistencia  VALUES ('$value','$id_clase[0]')";
-          mysql_query($sql,$con) or die('Error. '.mysql_error());
-        }
+    if($id){
+      $id_c = $id;
+    }else{
+      $link = mysqli_connect($bd_host, $bd_usuario, $bd_password, $bd_base)
+      or die('No se pudo conectar: ' . mysqli_error($link));
+      $query = 'select max(id) from clase;'
+        or die('Error en la consulta: ' . mysqli_error($link));
+      $result = $link->query($query);
+      $id_clase = mysqli_fetch_array($result);
+      $id_c = $id_clase[0];
+    }
+    foreach ($presentes as $key => $value) {
+      if($value!='on'){
+        $sql="INSERT INTO asistencia  VALUES ('$value','$id_c')";
+        mysql_query($sql,$con) or die('Error. '.mysql_error());
       }
     }
     
   }
 
  
-//registra los datos de la clase
-  if($id==null && $presentes==null){
+//registra una nueva clase.
+  if($id==null && $presentes==null && $bloque!=null){
     $sql="INSERT INTO clase (fecha, bloque, sala, contenido)  VALUES ('$fecha', '$bloque', '$sala', '$contenido')";
     mysql_query($sql,$con) or die('Error. '.mysql_error());
     
   }else{
+    //Borra las asitencia y la clase indicada con id.
     if($fecha==null && $presentes==null){
       $sql="DELETE FROM asistencia where clase_id ='$id'";
       mysql_query($sql,$con) or die('Error. '.mysql_error());
 	     $sql="DELETE FROM clase where id ='$id'";
 	     mysql_query($sql,$con) or die('Error. '.mysql_error());
     }else{
-      $sql="UPDATE clase SET fecha='$fecha', bloque='$bloque', sala='$sala', contenido='$contenido' where id ='$id'";
+      //si php recibe id y fecha crea el registro id.
+      $sql="insert into clase values('$id', '$fecha', '$bloque', '$sala', '$contenido')";
       mysql_query($sql,$con) or die('Error. '.mysql_error());
     }
   }
