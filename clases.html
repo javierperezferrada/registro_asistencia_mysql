@@ -1,0 +1,38 @@
+<html>
+<head>
+	<title>Registro de Clases</title>
+	<script src="jquery-1.11.1.min.js"></script>
+	<script language="JavaScript" type="text/javascript" src="funciones.js"></script>
+	<style type="text/css">
+		.trselected{
+			background-color: #4C9ED7;
+		}
+		#clases td:first-child{
+			display:none;
+			background-color: red;
+			text-align: center;
+		}
+
+
+
+
+	</style>
+</head>
+<body onLoad="mostrar_clases()">
+	<div>
+		<form name="btns_principal">
+			<input type="button"  value="Nueva Clase" id='nueva_clase'> 
+			<input type="button" id='editar_clase' value="Editar Clase"> 
+			<input type="button" onclick="eliminar_clase()" value="Eliminar Clase"> 
+		</form>
+	</div>
+
+
+	<div >
+		<table id="clases"></table>
+	</div>
+
+	
+
+</body>
+</html>

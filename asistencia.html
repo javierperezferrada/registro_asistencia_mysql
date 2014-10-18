@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+	<title>Alumnos</title>
+	<meta charset='utf-8'>
+	<script src="jquery-1.11.1.min.js"></script>
+	<script language="JavaScript" type="text/javascript" src="funciones.js"></script>
+	<style type="text/css">
+		.trselected{
+			background-color: #4C9ED7;
+		}
+		#alumnos td:first-child{
+			display:none;
+			background-color: red;
+			text-align: center;
+		}
+
+
+
+
+	</style>
+</head>
+<body onload='mostrar_alumnos()'>
+	<p id="seleccionada"></p>
+	<div>
+		<form id='datos_clase'>
+			<div>
+				<label for='fecha'></label>
+				<input name='fecha'>
+				<label for='bloque'></label>
+				<select name='bloque'>
+					<option>Seleccione Bloque</option>
+					<option>1</option>
+					<option>2</option>
+					<option>3</option>
+					<option>4</option>
+					<option>5</option>
+					<option>6</option>
+					<option>7</option>
+				</select>
+				<label for='sala'>Sala</label>
+				<input name='sala' type='text'>
+			</div>
+			<div>
+				<label for='contenido'>Contenido</label><br>
+				<textarea name='contenido' rows="6" cols="100"></textarea>
+			</div>
+		</form>
+
+
+	</div>
+
+
+
+	<div id="id01"> 
+		<input type='checkbox' id='presentes'><label>Seleccionar solo los alumnos presentes.</label>
+		<table id="alumnos"></table>
+		<input type='button' value='Cancelar' id='cancelar_clase'>
+		<input type='button' value='Guardar Datos' id='guardar'>
+	</div>
+</body>
+</html>
