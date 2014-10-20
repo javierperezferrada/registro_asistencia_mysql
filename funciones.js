@@ -1,3 +1,4 @@
+var accion
 var id;
 var fecha;
 var bloque;
@@ -8,12 +9,13 @@ var presentes = new Array();
 $(document).ready(function(){
 	//carga los datos enviados por url en asistencia para editarla
 	if(g=leerGET()){
-		id=g[0];
-		fecha=g[1];
-		bloque=g[2];
-		sala=g[3];
-		contenido=g[4];
-		if(id!= null && fecha!=null){
+		accion=g[0];
+		id=g[1];
+		fecha=g[2];
+		bloque=g[3];
+		sala=g[4];
+		$('input[name=accion]').val(accion);
+		if(id){
 			$('input[name=id]').val(id);
 			$('input[name=fecha]').val(fecha);
 			$('select[name=bloque]').val(bloque);
@@ -23,14 +25,16 @@ $(document).ready(function(){
 
 	/*******Funciones para clases.html********/
 	$('#nueva_clase').click(function(){
-		window.open('asistencia.html','_self');
+		accion=2;
+		window.open('asistencia.html?'+accion,'_self');
 	});//fin nueva_clase.click
 
 	$('#editar_clase').click(function(){
 		if(id == null){
 			alert('Debe seleccionar una clase para editar.')
 		}else{
-			window.open('asistencia.html?'+id+'&'+fecha+'&'+bloque+'&'+sala,'_self');
+			accion = 3;
+			window.open('asistencia.html?'+accion+'&'+id+'&'+fecha+'&'+bloque+'&'+sala,'_self');
 		}
 	});//fin editar_clase.click
 
@@ -63,20 +67,25 @@ $(document).ready(function(){
 
 	$('#guardar').click(function(){
 		if(id){
-			eliminar_clase();
+			eliminar_clase();//si existe id se elimina la clase con toda su asistencia si la tiene.
+			accion=5;//se asigna a accion el valor 5 que corresponde a agregar asistencia a la clase id.
+			presentes[presentes.length] = id;
+			presentes[presentes.length] = accion;
+		}else{
+			accion=4;
+			presentes[presentes.length] = id;
+			presentes[presentes.length] = accion;
 		}
-		$("input[type=checkbox]:checked").each(function(){
-		//cada elemento seleccionado
-			presentes[presentes.length] = $(this).val();
-		});
 		var datos = $('#datos_clase').serialize();
-		alert(datos);
 		$.post('asistencia.php', datos, processData).error('ouch!!');
  	 		function processData(data){
+ 	 			$("input[type=checkbox]:checked").each(function(){
+					presentes[presentes.length] = $(this).val();
+				});
  	 			$.ajax({
 					async: false,
 					type: "POST",
-					url: "asistencia.php",
+						url: "asistencia.php",
 					data: {
 					    presentes: presentes
 					},
@@ -180,7 +189,7 @@ function eliminar_clase(){
 		 }
 		xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 		//enviando los valores a registro.php para que inserte los datos
-		xmlhttp.send("id="+id);
+		xmlhttp.send("id="+id+'&accion='+ 1);
 	}
   }
 
