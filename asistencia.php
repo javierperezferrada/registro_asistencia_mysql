@@ -20,7 +20,6 @@ mysql_select_db($bd_base, $con);
   $presentes=$_POST['presentes'];
 
   if($accion==null){
-    $id=$presentes[0];
     $accion=$presentes[1];
   }
 
@@ -39,7 +38,7 @@ mysql_select_db($bd_base, $con);
       break;
 
     case 3://editar clase
-      $sql="insert into clase values('$id', '$fecha', '$bloque', '$sala', '$contenido')";
+      $sql="INSERT INTO clase (id, fecha, bloque, sala, contenido) VALUES ('$id', '$fecha', '$bloque', '$sala', '$contenido')";
       mysql_query($sql,$con) or die('Error. '.mysql_error());
       break;
 
@@ -52,8 +51,9 @@ mysql_select_db($bd_base, $con);
       $id_clase = mysqli_fetch_array($result);
       $id_c = $id_clase[0];
       foreach ($presentes as $key => $value) {
-        if($key<2){}else{
-
+        if($key<2){
+          null;
+        }else{
           if($value!='on'){
             $sql="INSERT INTO asistencia  VALUES ('$value','$id_c')";
             mysql_query($sql,$con) or die('Error. '.mysql_error());
@@ -63,17 +63,18 @@ mysql_select_db($bd_base, $con);
       break;
 
     case 5://agrega asistencia a clase id .
+      $id_c = $presentes[0];
       foreach ($presentes as $key => $value) {
-        if($key<2){}else{
-
+        if($key<2){
+          null;
+        }else{
           if($value!='on'){
-            $sql="INSERT INTO asistencia  VALUES ('$value','$id')";
+            $sql="INSERT INTO asistencia  VALUES ('$value','$id_c')";
             mysql_query($sql,$con) or die('Error. '.mysql_error());
           }
         }
       }
       break;
-
   }
 
 

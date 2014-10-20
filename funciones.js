@@ -67,34 +67,18 @@ $(document).ready(function(){
 
 	$('#guardar').click(function(){
 		if(id){
-			eliminar_clase();//si existe id se elimina la clase con toda su asistencia si la tiene.
-			accion=5;//se asigna a accion el valor 5 que corresponde a agregar asistencia a la clase id.
-			presentes[presentes.length] = id;
-			presentes[presentes.length] = accion;
+			var datos_borrar = "id="+id+'&accion='+ 1;
+			$.post('asistencia.php', datos_borrar, processBorrado).error('ouch!!');
+			
+
 		}else{
-			accion=4;
 			presentes[presentes.length] = id;
-			presentes[presentes.length] = accion;
-		}
-		var datos = $('#datos_clase').serialize();
-		$.post('asistencia.php', datos, processData).error('ouch!!');
- 	 		function processData(data){
- 	 			$("input[type=checkbox]:checked").each(function(){
-					presentes[presentes.length] = $(this).val();
-				});
- 	 			$.ajax({
-					async: false,
-					type: "POST",
-						url: "asistencia.php",
-					data: {
-					    presentes: presentes
-					},
-					success: function(data) {}
-				});//fin ajax
-				presentes=[];
-				alert('Clase creada exitosamente y asistencia agregada.');
-				window.open('clases.html','_self');
- 	 		};//fin processData
+			presentes[presentes.length] = 4;
+			var datos = $('#datos_clase').serialize();
+			$.post('asistencia.php', datos, processData).error('ouch!!');
+	 	 		
+		}//fin else
+		
 	});//fin guardar.click
 
 	$('#cancelar_clase').click(function(){
@@ -102,6 +86,55 @@ $(document).ready(function(){
 	});//fin cancelar_clase.click
 
 });//fin document.ready
+
+function processBorrado(data){
+				var datos = $('#datos_clase').serialize();
+				$.post('asistencia.php', datos, processData2).error('ouch!!');
+				
+ 	 		};//fin processData
+
+function processData(data){
+	 	 			$("input[type=checkbox]:checked").each(function(){
+						presentes[presentes.length] = $(this).val();
+					});
+	 	 			$.ajax({
+						async: false,
+						type: "POST",
+							url: "asistencia.php",
+						data: {
+						    presentes: presentes
+						},
+						success: function(data) {
+							console.log('asitencia agregada correctamente');
+						}
+					});//fin ajax
+					presentes=[];
+					alert('Clase creada exitosamente y asistencia agregada.');
+					window.open('clases.html','_self');
+	 	 		};//fin processData
+
+function processData2(){
+					presentes[presentes.length] = id;
+					presentes[presentes.length] = 5;
+	 	 			$("input[type=checkbox]:checked").each(function(){
+						presentes[presentes.length] = $(this).val();
+					});
+	 	 			$.ajax({
+						async: false,
+						type: "POST",
+							url: "asistencia.php",
+						data: {
+						    presentes: presentes
+						},
+						success: function(data) {
+							console.log('asitencia agregada correctamente');
+						}
+					});//fin ajax
+					presentes=[];
+					alert('Clase creada exitosamente y asistencia agregada.');
+					window.open('clases.html','_self');
+				}//fin processData2
+
 
 //funcion que recibe parametros en url html
 function leerGET(){
